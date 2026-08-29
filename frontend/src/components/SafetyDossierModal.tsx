@@ -12,7 +12,7 @@ import {
   CheckCircle2 
 } from 'lucide-react';
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api/v1';
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'https://railopt1.onrender.com/api/v1';
 
 interface Props {
   blockId: string;

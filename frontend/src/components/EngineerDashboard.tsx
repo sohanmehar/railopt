@@ -25,7 +25,7 @@ import {
   RadioTower
 } from 'lucide-react';
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api/v1';
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'https://railopt1.onrender.com/api/v1';
 
 export default function EngineerDashboard() {
   const { user } = useAuth();
