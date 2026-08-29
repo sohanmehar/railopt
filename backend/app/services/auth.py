@@ -1,11 +1,20 @@
 import os
-import bcrypt
+import bcrypt  # type: ignore[import-not-found]
 from datetime import datetime, timedelta
-from typing import Optional
-from jose import JWTError, jwt
+from typing import TYPE_CHECKING, Any, Optional
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
-from sqlalchemy.orm import Session
+
+try:
+    from jose import JWTError, jwt  # type: ignore[import-not-found]
+except ImportError:
+    from jwt import JWTError  # type: ignore[import-not-found]
+    import jwt  # type: ignore[import-not-found]
+
+if TYPE_CHECKING:
+    from sqlalchemy.orm import Session  # type: ignore[import-not-found]
+else:
+    Session = Any
 
 from app.database import get_db
 from app.models.entities import User

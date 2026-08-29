@@ -1,5 +1,5 @@
-from fastapi import APIRouter, HTTPException, Query, Depends
-from sqlalchemy.orm import Session
+from fastapi import APIRouter, HTTPException, Query, Depends, status
+from sqlalchemy.orm import Session  # type: ignore[import-not-found]
 from typing import List, Optional
 from datetime import datetime
 import uuid
