@@ -47,6 +47,14 @@ def compute_priority_score(defect: dict) -> float:
     return min(100.0, score)
 
 # 2. Heuristic Shadow Bundler & Corridor Slotting
+def safe_track_type(val: str) -> TrackTypeEnum:
+    if not val:
+        return TrackTypeEnum.UP_MAIN
+    try:
+        return TrackTypeEnum(val)
+    except ValueError:
+        return TrackTypeEnum.UP_MAIN
+
 def run_optimization_engine(horizon: HorizonEnum = HorizonEnum.DAILY) -> OptimizationResponse:
     data = load_data()
     raw_defects = data["defects"]
@@ -151,7 +159,7 @@ def run_optimization_engine(horizon: HorizonEnum = HorizonEnum.DAILY) -> Optimiz
                 ScheduledBlock(
                     block_id=f"BLK-PUNE-2026-{block_counter:03d}",
                     section_id=section_id,
-                    track_type=TrackTypeEnum(track_type),
+                    track_type=safe_track_type(track_type),
                     start_km=min_km,
                     end_km=max_km,
                     allocated_start_time=f"{start_hh:02d}:{start_mm:02d}",

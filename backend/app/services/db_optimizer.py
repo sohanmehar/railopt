@@ -10,7 +10,21 @@ from app.models.schemas import (
     HorizonEnum
 )
 
-def run_db_optimization_engine(db: Session, horizon: HorizonEnum = HorizonEnum.DAILY) -> OptimizationResponse:
+def safe_track_type(val: str) -> TrackTypeEnum:
+    if not val:
+        return TrackTypeEnum.UP_MAIN
+    try:
+        return TrackTypeEnum(val)
+    except ValueError:
+        return TrackTypeEnum.UP_MAIN
+
+def solve_railway_blocks_from_db(
+    db: Session, 
+    horizon: HorizonEnum = HorizonEnum.DAILY,
+    punctuality_weight: float = 0.85,
+    safety_weight: float = 0.95,
+    freight_penalty: float = 0.40
+) -> OptimizationResponse:
     # 1. Fetch defects and train paths directly from Neon PostgreSQL
     raw_defects = db.query(TelemetryDefect).all()
     raw_trains = db.query(TrainPath).all()
@@ -103,7 +117,7 @@ def run_db_optimization_engine(db: Session, horizon: HorizonEnum = HorizonEnum.D
             scheduled_block = ScheduledBlock(
                 block_id=block_id,
                 section_id=section_id,
-                track_type=TrackTypeEnum(track_type),
+                track_type=safe_track_type(track_type),
                 start_km=min_km,
                 end_km=max_km,
                 allocated_start_time=f"{start_hh:02d}:{start_mm:02d}",

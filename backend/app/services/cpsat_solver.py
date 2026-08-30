@@ -13,6 +13,14 @@ from app.models.schemas import (
     HorizonEnum
 )
 
+def safe_track_type(val: str) -> TrackTypeEnum:
+    if not val:
+        return TrackTypeEnum.UP_MAIN
+    try:
+        return TrackTypeEnum(val)
+    except ValueError:
+        return TrackTypeEnum.UP_MAIN
+
 def solve_railway_blocks_cpsat(
     db: Session, 
     horizon: HorizonEnum = HorizonEnum.DAILY,
@@ -211,7 +219,7 @@ def solve_railway_blocks_cpsat(
                 ScheduledBlock(
                     block_id=f"BLK-PUNE-2026-{block_counter:03d}",
                     section_id=section_id,
-                    track_type=TrackTypeEnum(track_line),
+                    track_type=safe_track_type(track_line),
                     start_km=min_km,
                     end_km=max_km,
                     allocated_start_time=f"{start_hh:02d}:{start_mm:02d}",

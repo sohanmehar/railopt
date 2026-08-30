@@ -11,6 +11,10 @@ class TrackTypeEnum(str, Enum):
     UP_MAIN = "UP_MAIN"
     DOWN_MAIN = "DOWN_MAIN"
     SINGLE_LINE = "SINGLE_LINE"
+    LOOP_LINE = "LOOP_LINE"
+    YARD = "YARD"
+    SIDING = "SIDING"
+    THIRD_LINE = "THIRD_LINE"
 
 class SeverityEnum(str, Enum):
     CRITICAL = "CRITICAL"
