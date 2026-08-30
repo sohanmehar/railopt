@@ -16,7 +16,13 @@ import {
   Cpu
 } from 'lucide-react';
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'https://railopt1.onrender.com/api/v1';
+const getApiBase = () => {
+  const envUrl = process.env.NEXT_PUBLIC_API_URL || 'https://railopt1.onrender.com/api/v1';
+  const cleanUrl = envUrl.replace(/\/+$/, '');
+  return cleanUrl.endsWith('/api/v1') ? cleanUrl : `${cleanUrl}/api/v1`;
+};
+
+const API_BASE = getApiBase();
 
 export default function AdminDashboard() {
   const { user } = useAuth();

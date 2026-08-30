@@ -30,7 +30,7 @@ from app.services.statutory_forms import (
     generate_caution_order_t409
 )
 
-router = APIRouter(prefix="/api/v1")
+router = APIRouter()
 
 @router.get("/health", tags=["System"])
 def health_check(db: Session = Depends(get_db)):
