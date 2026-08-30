@@ -1,3 +1,4 @@
+# pyrefly: ignore [missing-import]
 from sqlalchemy.orm import Session
 from typing import List, Dict
 from app.models.entities import TelemetryDefect, TrainPath, SanctionedBlock

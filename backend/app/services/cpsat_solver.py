@@ -1,4 +1,5 @@
 from ortools.sat.python import cp_model
+# pyrefly: ignore [missing-import]
 from sqlalchemy.orm import Session
 from typing import List, Dict
 import math
