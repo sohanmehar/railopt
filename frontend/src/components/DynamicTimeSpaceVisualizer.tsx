@@ -13,12 +13,13 @@ interface Props {
 }
 
 export default function DynamicTimeSpaceVisualizer({
-  trains,
+  trains = [],
   selectedBlock,
   delayedTrainNumber,
   sectionStartKm = 0.0,
   sectionEndKm = 64.0
 }: Props) {
+  const safeTrains = Array.isArray(trains) ? trains : [];
   const width = 800;
   const height = 240;
   const paddingLeft = 45;
@@ -66,7 +67,7 @@ export default function DynamicTimeSpaceVisualizer({
             </span>
           )}
           <span className="text-[10px] bg-[#F1EDE3] text-[#9A111F] border border-[#D8D2C7] font-mono px-2 py-0.5 rounded-md font-semibold">
-            {trains.length} Trains Mapped
+            {safeTrains.length} Trains Mapped
           </span>
         </div>
       </div>
@@ -134,7 +135,7 @@ export default function DynamicTimeSpaceVisualizer({
           })}
 
           {/* Train Trajectory Slopes */}
-          {trains.map((train) => {
+          {safeTrains.map((train) => {
             const isDelayed = String(train.train_number) === String(delayedTrainNumber);
             const x1 = timeToX(train.entry_minute_of_day);
             const y1 = kmToY(sectionStartKm);

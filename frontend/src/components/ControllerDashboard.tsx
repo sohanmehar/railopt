@@ -63,7 +63,7 @@ export default function ControllerDashboard() {
       const ttRes = await fetch(`${API_BASE}/timetable`);
       if (ttRes.ok) {
         const ttJson = await ttRes.json();
-        setTrains(ttJson.data || []);
+        setTrains(Array.isArray(ttJson?.data) ? ttJson.data : []);
       } else {
         setTrains([]);
       }
@@ -316,7 +316,7 @@ const handleInjectLiveDelay = async () => {
 
                     <div className="flex items-center gap-1.5 flex-wrap pt-2 border-t border-[#D8D2C7]">
                       <span className="text-[10px] text-[#667085]">Integrated:</span>
-                      {block.bundled_departments.map((dept) => (
+                      {(block.bundled_departments || []).map((dept) => (
                         <span key={dept} className="text-[10px] px-1.5 py-0.5 rounded bg-[#F1EDE3] text-[#344054] flex items-center gap-1 font-mono border border-[#D8D2C7]">
                           {dept === 'CIVIL' && <ShieldAlert className="w-3 h-3 text-[#9A111F]" />}
                           {dept === 'SNT' && <Radio className="w-3 h-3 text-[#21304D]" />}
