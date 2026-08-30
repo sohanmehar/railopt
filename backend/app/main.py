@@ -1,12 +1,20 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.routes.api import router as api_router
+from app.init_db import init_and_seed_neon_db
 
 app = FastAPI(
     title="RailBlock AI - Automatic Block Planning Engine",
     description="API for Indian Railways Multi-Department Maintenance Optimization, Shadow Bundling & Timetable Deconfliction.",
     version="1.0.0"
 )
+
+@app.on_event("startup")
+def startup_db():
+    try:
+        init_and_seed_neon_db()
+    except Exception as e:
+        print(f"Startup DB seed exception: {e}")
 
 # CORS setup for Next.js frontend
 app.add_middleware(

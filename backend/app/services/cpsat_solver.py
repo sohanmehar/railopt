@@ -26,6 +26,15 @@ def solve_railway_blocks_cpsat(
     trains = db.query(TrainPath).all()
 
     if not defects:
+        try:
+            from app.init_db import init_and_seed_neon_db
+            init_and_seed_neon_db()
+            defects = db.query(TelemetryDefect).all()
+            trains = db.query(TrainPath).all()
+        except Exception as e:
+            print("Auto-seed error on empty defects:", e)
+
+    if not defects:
         return OptimizationResponse(
             horizon=horizon,
             total_blocks_scheduled=0,

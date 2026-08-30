@@ -132,6 +132,7 @@ def get_timetable(db: Session = Depends(get_db)):
     }
 
 # 4. Trigger AI Optimization (DB + CP-SAT Powered)
+@router.get("/optimize", response_model=OptimizationResponse, tags=["Optimization"])
 @router.post("/optimize", response_model=OptimizationResponse, tags=["Optimization"])
 def run_optimizer(
     horizon: HorizonEnum = Query(HorizonEnum.DAILY),
