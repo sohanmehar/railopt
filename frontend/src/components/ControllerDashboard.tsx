@@ -61,15 +61,23 @@ export default function ControllerDashboard() {
     try {
       // 1. Fetch Timetable
       const ttRes = await fetch(`${API_BASE}/timetable`);
-      const ttJson = await ttRes.json();
-      setTrains(ttJson.data || []);
+      if (ttRes.ok) {
+        const ttJson = await ttRes.json();
+        setTrains(ttJson.data || []);
+      } else {
+        setTrains([]);
+      }
 
       // 2. Fetch AI Optimization Plan (CP-SAT powered)
       const optRes = await fetch(`${API_BASE}/optimize?horizon=DAILY`, { method: 'POST' });
-      const optJson: OptimizationResult = await optRes.json();
-      setData(optJson);
-      if (optJson.blocks && optJson.blocks.length > 0) {
-        setSelectedBlock(optJson.blocks[0]);
+      if (optRes.ok) {
+        const optJson: OptimizationResult = await optRes.json();
+        if (optJson && Array.isArray(optJson.blocks)) {
+          setData(optJson);
+          if (optJson.blocks.length > 0) {
+            setSelectedBlock(optJson.blocks[0]);
+          }
+        }
       }
     } catch (err) {
       console.error("Failed to fetch data:", err);
@@ -255,12 +263,12 @@ const handleInjectLiveDelay = async () => {
                 AI Scheduled Integrated Blocks
               </h3>
               <span className="text-[11px] text-[#9A111F] bg-[#F1EDE3] px-2 py-0.5 rounded-md font-mono border border-[#D8D2C7] font-medium">
-                {data?.blocks.length || 0} Corridors
+                {data?.blocks?.length || 0} Corridors
               </span>
             </div>
 
             <div className="space-y-3 max-h-[620px] overflow-y-auto pr-1">
-              {data?.blocks.map((block) => {
+              {(data?.blocks || []).map((block) => {
                 const isSelected = selectedBlock?.block_id === block.block_id;
                 const isSanctioned = sanctionedIds.includes(block.block_id);
 
@@ -421,11 +429,11 @@ const handleInjectLiveDelay = async () => {
           <div className="flex items-center justify-between border-b border-[#D8D2C7] pb-3">
             <h3 className="text-[14px] font-semibold text-[#21304D] flex items-center gap-2">
               <Layers className="w-4 h-4 text-[#9A111F]" />
-              Full Divisional Scheduled Corridors ({data?.blocks.length || 0} Slots)
+              Full Divisional Scheduled Corridors ({data?.blocks?.length || 0} Slots)
             </h3>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-[12px]">
-            {data?.blocks.map((blk) => (
+            {(data?.blocks || []).map((blk) => (
               <div key={blk.block_id} className="p-4 bg-[#FFFFFF] rounded-xl border border-[#D8D2C7] space-y-2 shadow-xs">
                 <div className="flex justify-between font-mono">
                   <span className="font-bold text-[#344054]">{blk.block_id}</span>
@@ -451,7 +459,7 @@ const handleInjectLiveDelay = async () => {
             </h3>
           </div>
           <div className="space-y-3">
-            {data?.blocks.map((blk) => (
+            {(data?.blocks || []).map((blk) => (
               <div key={blk.block_id} className="p-3.5 bg-[#FFFFFF] rounded-xl border border-[#D8D2C7] flex items-center justify-between text-[12px] shadow-xs">
                 <div>
                   <span className="font-mono font-bold text-[#344054]">{blk.block_id}</span>

@@ -259,7 +259,7 @@ export default function AdminDashboard() {
 
                   <div className="text-right font-mono">
                     <div className="text-[#287A62] font-bold">+{blk.time_saved_mins}m saved</div>
-                    <div className="text-[10px] text-[#667085]">{blk.bundled_tasks.length} tasks bundled</div>
+                    <div className="text-[10px] text-[#667085]">{(blk.bundled_tasks || []).length} tasks bundled</div>
                   </div>
                 </div>
               ))}

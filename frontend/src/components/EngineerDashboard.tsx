@@ -369,17 +369,17 @@ export default function EngineerDashboard() {
                 Telemetry Defect Feed ({department})
               </h3>
               <span className="text-[11px] text-[#9A111F] bg-[#F1EDE3] px-2 py-0.5 rounded-md font-mono border border-[#D8D2C7] font-medium">
-                {defects.length} Active
+                {(defects || []).length} Active
               </span>
             </div>
 
             <div className="space-y-2.5 max-h-[460px] overflow-y-auto pr-1">
               {loading ? (
                 <div className="p-8 text-center text-[#667085] text-[12px]">Connecting to Neon PostgreSQL...</div>
-              ) : defects.length === 0 ? (
+              ) : (defects || []).length === 0 ? (
                 <div className="p-8 text-center text-[#667085] text-[12px]">No pending defects for this corridor.</div>
               ) : (
-                defects.map((d) => (
+                (defects || []).map((d) => (
                   <div key={d.defect_id} className="p-3.5 rounded-2xl bg-[#FFFFFF] border border-[#D8D2C7] hover:border-[#9A111F]/50 transition-all space-y-1.5 text-[12px] shadow-xs">
                     <div className="flex items-center justify-between">
                       <span className="font-mono font-bold text-[#344054]">{d.defect_id}</span>
